@@ -21,7 +21,7 @@ public class AccountService implements SObjectServiceInterface{
         }    
     }
     
-    public List<Account> filterRecords(List<sObject> records, Map<String, Object> filters){
+    public List<Account> filterRecords(List<sObject> records, Map<String, Object> filters){  
         List<Account> retrivedAccounts = new List<Account>();
         if(records instanceof List<Account>){
             List<Account> accounts = (List<Account>) records;
