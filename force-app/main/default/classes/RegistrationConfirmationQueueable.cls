@@ -1,4 +1,4 @@
-public with sharing class RegistrationConfirmationQueueable implements Queueable {
+public with sharing class RegistrationConfirmationQueueable implements Queueable, Database.AllowsCallouts {
     Set<Id> participantIds = new Set<Id>();
     public RegistrationConfirmationQueueable(Set<Id> participantIds){
         this.participantIds = participantIds;
@@ -7,6 +7,7 @@ public with sharing class RegistrationConfirmationQueueable implements Queueable
         List<Messaging.SingleEmailMessage> emails = new List<Messaging.SingleEmailMessage>();
 
         List<Participant__c> participants = queryParticipants(participantIds);
+        PaymentLinkCallout.requestPaymentLink(participants);
         
         for(Participant__c participant : participants){
             Messaging.SingleEmailMessage email = constructConfirmationEmail(participant);
@@ -16,6 +17,7 @@ public with sharing class RegistrationConfirmationQueueable implements Queueable
         if(!emails.isEmpty()){
             Messaging.sendEmail(emails);
         }
+        PaymentLinkCallout.sendPaymentEmail(participants);
     }
 
     private Messaging.SingleEmailMessage constructConfirmationEmail(Participant__c participant){
