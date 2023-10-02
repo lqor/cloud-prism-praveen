@@ -17,6 +17,7 @@ public with sharing class RegistrationConfirmationQueueable implements Queueable
         if(!emails.isEmpty()){
             Messaging.sendEmail(emails);
         }
+        
         PaymentLinkCallout.sendPaymentEmail(participants);
     }
 
