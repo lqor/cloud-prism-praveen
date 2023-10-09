@@ -4,13 +4,8 @@ public with sharing class ParticipantSync {
     public static void sendParticipant (List<Id> participantIds){
         List<Participant__c> participants = queryParticipantsByIds(participantIds);
 
-        for(Participant__c participant : participants){
-            String responseBody = ERPCallout.sendParticipantToERP(participant);
-            String erpId = ERPCallout.parseERPIdFromResponse(responseBody);
-            SYSTEM.DEBUG('reponseBody-->' + responseBody);
-            SYSTEM.DEBUG('erpId-->' + erpId);
-            participant.ErpId__c = erpId;
-        }
+        ParticipantService participantService = new ParticipantService();
+        participantService.sendParticipantToERP(participants);
         update participants;
     } 
 

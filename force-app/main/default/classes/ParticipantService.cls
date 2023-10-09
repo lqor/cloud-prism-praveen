@@ -40,4 +40,13 @@ public with sharing class ParticipantService {
             }
         }
     }
+
+    public List<Participant__c> sendParticipantToERP(List<Participant__c> participants){
+        for(Participant__c participant : participants){
+            String responseBody = ERPCallout.sendParticipantToERP(participant);
+            String erpId = ERPCallout.parseERPIdFromResponse(responseBody);
+            participant.ErpId__c = erpId;
+        }
+        return participants;        
+    }
 }
