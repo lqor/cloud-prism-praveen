@@ -7,8 +7,13 @@ global with sharing class ParticipantsSyncBatch implements Database.Batchable<sO
 
     global void execute(Database.BatchableContext BC, List<Participant__c> participants){
         ParticipantService participantService = new ParticipantService();
-        participantService.sendParticipantToERP(participants);
-        update participants;
+        try{
+            participantService.sendParticipantToERP(participants);
+            update participants;
+        }catch(Exception e){
+            Logger.log(Exception e);
+        }
+        
     }
 
     global void finish(Database.BatchableContext BC){
