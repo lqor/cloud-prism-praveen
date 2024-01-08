@@ -8,6 +8,8 @@ public with sharing class ParticipantTriggerHandler {
         ParticipantService service = new ParticipantService();
         service.recalculateCommissionOnTrainings(newList, newMap);
         RegistrationConfirmationQueueable que = new RegistrationConfirmationQueueable(newMap.keyset());
+        ParticipantInvoiceCreationQueueable invoiceque = new ParticipantInvoiceCreationQueueable(newMap.keyset());
         System.enqueueJob(que);
+        System.enqueueJob(invoiceque);
     }
 }
